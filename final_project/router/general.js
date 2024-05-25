@@ -16,11 +16,33 @@ public_users.get('/', function (req, res) {
   return res.status(200).json({ books: books });
 });
 
-// Get book details based on ISBN
-public_users.get('/isbn/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
- });
+// Get book details based on ID
+public_users.get('/isbn/:isbn', function (req, res) {
+  // Retrieve the ID from the request parameters
+  const id = parseInt(req.params.isbn);
+  
+  // Check if the ID is valid
+  if (!isNaN(id)) {
+    // Find the book with the matching ID
+    const book = books[id];
+
+    // If the book is found, return its details as JSON
+    if (book) {
+      return res.status(200).json(book);
+    } else {
+      // If the book is not found, return a 404 Not Found error
+      return res.status(404).json({ message: "Book not found" });
+    }
+  } else {
+    // If the ID is not a valid number, return a 400 Bad Request error
+    return res.status(400).json({ message: "Invalid ID format" });
+  }
+});
+
+
+
+
+
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
